@@ -13,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
@@ -92,12 +91,12 @@ public class MiniMapRenderer {
         GlStateManager.popMatrix();
     }
 
-    public void updateMapData(World worldIn, Entity viewer) {
+    public void updateMapData(World worldIn) {
         int i = 1;
         int j = mc.thePlayer.getPosition().getX();
         int k = mc.thePlayer.getPosition().getZ();
-        int l = MathHelper.floor_double(viewer.posX - (double) j) / i + 64;
-        int i1 = MathHelper.floor_double(viewer.posZ - (double) k) / i + 64;
+        int l = MathHelper.floor_double(mc.thePlayer.posX - (double) j) / i + 64;
+        int i1 = MathHelper.floor_double(mc.thePlayer.posZ - (double) k) / i + 64;
         int j1 = 128 / i;
 
         if (worldIn.provider.getHasNoSky()) {
@@ -229,7 +228,12 @@ public class MiniMapRenderer {
             }
         }
 
-        MAP_TEXTURE.updateDynamicTexture();
+        try {
+            MAP_TEXTURE.updateDynamicTexture();
+        }
+        catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
 }

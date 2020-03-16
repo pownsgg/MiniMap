@@ -1,6 +1,7 @@
 package dev.powns.minimap.listener;
 
 import dev.powns.minimap.MiniMapMod;
+import dev.powns.minimap.gui.MiniMapRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -10,12 +11,17 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 public class MiniMapListener {
 
     private Minecraft mc = Minecraft.getMinecraft();
+    private MiniMapRenderer miniMapRenderer;
+
+    public MiniMapListener(){
+        miniMapRenderer = MiniMapMod.getInstance().getMiniMapRenderer();
+    }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (mc.theWorld != null && mc.thePlayer != null) {
-            MiniMapMod.getInstance().getMiniMapRenderer().updateMapData(mc.theWorld, mc.thePlayer);
-            MiniMapMod.getInstance().getMiniMapRenderer().updateMapTexture();
+            miniMapRenderer.updateMapData(mc.theWorld);
+            miniMapRenderer.updateMapTexture();
         }
     }
 
@@ -27,7 +33,7 @@ public class MiniMapListener {
             ScaledResolution scaledResolution = new ScaledResolution(mc);
             int screenWidth = scaledResolution.getScaledWidth(), hudSpacing = 5, miniMapSize = 45;
 
-            MiniMapMod.getInstance().getMiniMapRenderer().renderMiniMap(screenWidth - hudSpacing - miniMapSize, hudSpacing + miniMapSize, miniMapSize);
+            miniMapRenderer.renderMiniMap(screenWidth - hudSpacing - miniMapSize, hudSpacing + miniMapSize, miniMapSize);
         }
     }
 
