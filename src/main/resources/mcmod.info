@@ -1,0 +1,11 @@
+[
+{
+  "modid": "pownsminimap",
+  "name": "MiniMap Mod",
+  "description": "A simple minimap mod.",
+  "version": "1.0",
+  "mcversion": "1.8.9",
+  "authorList": ["powns"],
+}
+]
+
