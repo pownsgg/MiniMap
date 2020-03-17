@@ -26,17 +26,17 @@ public class MiniMapRenderer {
     private static final ResourceLocation MAP_BORDER = new ResourceLocation("pownsminimap", "border.png");
     private static final ResourceLocation PLAYER_MARKER = new ResourceLocation("pownsminimap", "playermarker.png");
 
-    private byte[] MAP_COLORS = new byte[16384];
-    private DynamicTexture MAP_TEXTURE;
+    private byte[] miniMapColors = new byte[16384];
+    private DynamicTexture miniMapTexture;
 
     private Minecraft mc = Minecraft.getMinecraft();
 
     public MiniMapRenderer(){
-        MAP_TEXTURE = new DynamicTexture(128, 128);
+        miniMapTexture = new DynamicTexture(128, 128);
 
-        for (int i = 0; i < MAP_TEXTURE.getTextureData().length; ++i)
+        for (int i = 0; i < miniMapTexture.getTextureData().length; ++i)
         {
-            MAP_TEXTURE.getTextureData()[i] = 0;
+            miniMapTexture.getTextureData()[i] = 0;
         }
     }
 
@@ -51,7 +51,7 @@ public class MiniMapRenderer {
         mc.getTextureManager().bindTexture(MAP_BORDER);
         drawCircle(x, y, radius + 3, 0);
 
-        mc.getTextureManager().bindTexture(mc.getTextureManager().getDynamicTextureLocation("minimap", MAP_TEXTURE ));
+        mc.getTextureManager().bindTexture(mc.getTextureManager().getDynamicTextureLocation("minimap", miniMapTexture));
         drawCircle(x, y, radius, 180 - rotationYaw);
 
         mc.getTextureManager().bindTexture(PLAYER_MARKER);
@@ -204,11 +204,11 @@ public class MiniMapRenderer {
                         d0 = d1;
 
                         if (l1 >= 0 && i2 * i2 + j2 * j2 < j1 * j1 && (!flag1 || (k1 + l1 & 1) != 0)) {
-                            byte b0 = MAP_COLORS[k1 + l1 * 128];
+                            byte b0 = miniMapColors[k1 + l1 * 128];
                             byte b1 = (byte) (mapcolor.colorIndex * 4 + i5);
 
                             if (b0 != b1) {
-                                MAP_COLORS[k1 + l1 * 128] = b1;
+                                miniMapColors[k1 + l1 * 128] = b1;
                             }
                         }
                     }
@@ -219,17 +219,17 @@ public class MiniMapRenderer {
 
     public void updateMapTexture() {
         for (int i = 0; i < 16384; i++) {
-            int j = MAP_COLORS[i] & 255;
+            int j = miniMapColors[i] & 255;
 
             if (j / 4 == 0) {
-                MAP_TEXTURE.getTextureData()[i] = (i + i / 128 & 1) * 8 + 16 << 24;
+                miniMapTexture.getTextureData()[i] = (i + i / 128 & 1) * 8 + 16 << 24;
             } else {
-                MAP_TEXTURE.getTextureData()[i] = MapColor.mapColorArray[j / 4].func_151643_b(j & 3);
+                miniMapTexture.getTextureData()[i] = MapColor.mapColorArray[j / 4].func_151643_b(j & 3);
             }
         }
 
         try {
-            MAP_TEXTURE.updateDynamicTexture();
+            miniMapTexture.updateDynamicTexture();
         }
         catch (Exception exception){
             System.out.println(exception.getMessage());
